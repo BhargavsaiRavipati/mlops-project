@@ -7,6 +7,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score
 
 from preprocess import load_data, preprocess_data, split_data
+import os
+
+# Fix MLflow path for CI/CD
+mlflow.set_tracking_uri("file:./mlruns")
 
 
 mlflow.set_experiment("mlops-project")
@@ -22,6 +26,7 @@ def train():
 
     # Model
     model = RandomForestClassifier(n_estimators=100)
+    os.makedirs("mlruns", exist_ok=True)
 
     with mlflow.start_run():
 
