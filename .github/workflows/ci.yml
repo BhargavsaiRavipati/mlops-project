@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Step 1: Get your code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Setup Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # Step 4: Run ML training
+    - name: Run training script
+      run: |
+        cd src
+        python train.py
+
+    # Step 5: Build Docker image
+    - name: Build Docker image
+      run: |
+        docker build -t mlops-app .
